@@ -5,7 +5,7 @@ abcdefghijklmnñopqrstuvwxyz\
 ABCDEFGHIJKLMNÑOPQRSTUVWXYZ\
 0123456789áéíóú (),.!?;:"\
 |¿¡°#$%&/=+-*-_@~\
-[]{}<>'
+[]{}<>ẅ'
 
 ran = len(Kc)
 
@@ -14,13 +14,14 @@ dict_out = {int(idx):Kc[idx] for idx in range(ran)}
 
 
 def open_text_in(text:str, ran:int, dict_in:dict) -> int :
+    text = text.replace('\n','ẅ')
     l = len(text)
     num = 0
     for i in range(l):
-        try:
+        # try:
             num += dict_in[text[i]] * ran**(int(i))
-        except KeyError:
-            num += dict_in['?'] * ran**(int(i))
+        # except KeyError:
+        #     num += dict_in['?'] * ran**(int(i))
     return num
 
 
@@ -83,6 +84,7 @@ def open_text_out(num:int, ran:int, dict_out:dict) -> str :
         r = num % ran
         num = div
         text += dict_out[r]
+    text = text.replace('ẅ','\n')
     return text
 
 
@@ -106,7 +108,7 @@ class Encryption:
         if not self.key_code:
             pass
         else:
-            try:
+            # try:
                 mod = self.key_code._k1
                 exp = self.key_code._k2
                 max_len = len(str(mod))
@@ -115,8 +117,8 @@ class Encryption:
                 c_int_lis = exponential_cipher_lis(int_lis, exp, mod)
                 c_num = lis_int_to_int(c_int_lis, max_len)
                 self.message = open_text_out(c_num, ran, dict_out)
-            except:
-                input('\n\tSomething is wrong!\n')
+            # except:
+            #     input('\n\tSomething is wrong!\n')
         
         
 
