@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from graphs import Node, Graph
 from keycode import KeyCode
 from encryption import Encryption

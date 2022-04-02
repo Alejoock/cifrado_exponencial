@@ -4,7 +4,7 @@ Kc = 'ẍ\
 abcdefghijklmnñopqrstuvwxyz\
 ABCDEFGHIJKLMNÑOPQRSTUVWXYZ\
 0123456789áéíóú (),.!?;:"\
-|¿¡°#$%&/=+-*-_@~\
+|¿¡°#$%&/=+-*_@~\
 []{}<>ẅ'
 
 ran = len(Kc)
@@ -13,28 +13,45 @@ dict_in = {Kc[idx]:int(idx) for idx in range(ran)}
 dict_out = {int(idx):Kc[idx] for idx in range(ran)}
 
 
-def open_text_in(text:str, ran:int, dict_in:dict) -> int :
+def open_text_in(text:str, dict_in:dict) -> int :
     text = text.replace('\n','ẅ')
+    ran = len(dict_in)
     l = len(text)
     num = 0
     for i in range(l):
-        # try:
+        try:
             num += dict_in[text[i]] * ran**(int(i))
-        # except KeyError:
-        #     num += dict_in['?'] * ran**(int(i))
+        except KeyError:
+            num += dict_in['?'] * ran**(int(i))
     return num
+
+def open_text_out(num:int, dict_out:dict) -> str :
+    text = ''
+    ran = len(dict_out)
+    r , div = 1 , 1
+    while div != 0:
+        div = num // ran
+        r = num % ran
+        num = div
+        text += dict_out[r]
+    text = text.replace('ẅ','\n')
+    return text
 
 
 def int_to_lis_int(num:int, max_len:int) -> list:
     dig = str(num)
-    rang = ((len(dig) - 1) // max_len) + 1
-    res = len(dig) % max_len
-    if res == 0:
-        dig_lis = [dig[max_len*idx:max_len*(idx + 1)] for idx in range(rang)]
-    else:
-        dig_lis = [dig[:res]] + [dig[res + max_len*idx:res + max_len*(idx + 1)] \
-                               for idx in range(rang - 1)]
+    while len(dig) % max_len != 0:
+        dig = '0' + dig
+    rang = len(dig) // max_len
+    dig_lis = [dig[max_len*idx:max_len*(idx + 1)] for idx in range(rang)]
     return [int(dig) for dig in dig_lis]
+
+def lis_int_to_int(lis_int:list, max_len:int) -> int:
+    lis_int = [str(num) for num in lis_int]
+    for idx in range(len(lis_int)):
+        while len(lis_int[idx]) % max_len != 0:
+            lis_int[idx] = '0' + lis_int[idx]
+    return int(''.join(lis_int))
 
 
 def power_tower(num:int, mod:int, max_power:int) -> list:
@@ -43,7 +60,6 @@ def power_tower(num:int, mod:int, max_power:int) -> list:
         power = pow_tow[0] ** 2 % mod
         pow_tow.insert(0, power)
     return pow_tow
-
 
 def power_mod(num:int, exp:int, mod:int) -> int:
     
@@ -60,32 +76,11 @@ def power_mod(num:int, exp:int, mod:int) -> int:
             result %= mod
     return result
 
-
 def exponential_cipher_lis(int_lis:list, exp:int, mod:int) -> list:
     return [power_mod(num, exp, mod) for num in int_lis]
 
 
-def lis_int_to_int(int_lis:list, max_len:int) -> int:
-    dig_lis = []
-    for num in int_lis:
-        dig = str(num)
-        while len(dig) < max_len:
-            dig = '0' + dig
-        dig_lis.append(dig)
-    dig = ''.join(dig_lis)
-    return int(dig)
-    
 
-def open_text_out(num:int, ran:int, dict_out:dict) -> str :
-    text = ''
-    r , div = 1 , 1
-    while div != 0:
-        div = num // ran
-        r = num % ran
-        num = div
-        text += dict_out[r]
-    text = text.replace('ẅ','\n')
-    return text
 
 
 
@@ -112,13 +107,13 @@ class Encryption:
                 mod = self.key_code._k1
                 exp = self.key_code._k2
                 max_len = len(str(mod))
-                num = open_text_in(self.message, ran, dict_in)
+                num = open_text_in(self.message, dict_in)
                 int_lis = int_to_lis_int(num , max_len - 1)
                 c_int_lis = exponential_cipher_lis(int_lis, exp, mod)
                 c_num = lis_int_to_int(c_int_lis, max_len)
-                self.message = open_text_out(c_num, ran, dict_out)
+                self.message = open_text_out(c_num, dict_out).replace('\n','ẅ')
             # except:
-            #     input('\n\tSomething is wrong!\n')
+                # input('\n\tSomething is wrong!\n')
         
         
 
@@ -130,11 +125,11 @@ class Encryption:
                 mod = self.key_code._k1
                 exp = self.key_code._k3
                 max_len = len(str(mod))
-                num = open_text_in(self.message, ran, dict_in)
+                num = open_text_in(self.message, dict_in)
                 int_lis = int_to_lis_int(num , max_len)
                 c_int_lis = exponential_cipher_lis(int_lis, exp, mod)
                 c_num = lis_int_to_int(c_int_lis, max_len - 1)
-                self.message = open_text_out(c_num, ran, dict_out)
+                self.message = open_text_out(c_num, dict_out)
             except:
                 input('\n\tSomething is wrong!\n')
             

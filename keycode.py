@@ -1,6 +1,36 @@
 import math
 import random
 
+K = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+ran = len(K)
+
+k_in = {K[idx]:int(idx) for idx in range(ran)}
+k_out = {int(idx):K[idx] for idx in range(ran)}
+
+def key_in(text:str, dict_in:dict) -> int :
+    text = text.replace('\n','ẅ')
+    ran = len(dict_in)
+    l = len(text)
+    num = 0
+    for i in range(l):
+        try:
+            num += dict_in[text[i]] * ran**(int(i))
+        except KeyError:
+            num += dict_in['?'] * ran**(int(i))
+    return num
+
+def key_out(num:int, dict_out:dict) -> str :
+    text = ''
+    ran = len(dict_out)
+    r , div = 1 , 1
+    while div != 0:
+        div = num // ran
+        r = num % ran
+        num = div
+        text += dict_out[r]
+    text = text.replace('ẅ','\n')
+    return text
 
 def odd_length(func):
     def wrapper(*args, **kwargs):
@@ -90,10 +120,18 @@ class KeyCode:
         
     def __str__(self) -> str:
         data = f'k1={str(self._k1)}\nk2={str(self._k2)}\nk3={str(self._k3)}'
+#         data = f'k1={key_out(self._k1, k_out)}\nk2={key_out(self._k2, k_out)}\
+# \nk3={key_out(self._k3, k_out)}'
         return data
     
     def __call__(self):
         return self._generate_key()
+    
+    # def _verify_k(self, k):
+    #     if type(k) is str:
+    #         return key_in(k, k_in)
+    #     elif type(k) is int:
+    #         return k
     
     def _generate_key(self, bytes_k1: int = 45, bytes_k2: int = 45) -> None:
         
