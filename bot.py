@@ -110,7 +110,7 @@ async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == '__main__':
 
 # Lo basico    
-    application = ApplicationBuilder().token('6260522820:AAE5jiDvZRPGCGi17yr7u6Kg2NhIR0tOOqQ').build()
+    application = ApplicationBuilder().token('TOKEN_BOT').build()
 
     echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
