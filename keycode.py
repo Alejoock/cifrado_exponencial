@@ -77,11 +77,7 @@ class KeyCode:
         self._k1 = k1
         self._k2 = k2
         self._k3 = k3
-        if (self._k1 is None) | (self._k2 is None) | (self._k3 is None):
-            self._first_time = True
-        else:
-            self._first_time = False
-        
+
     def __bool__(self) -> bool:
         if (self._k1 is None) | (self._k2 is None) | (self._k3 is None):
             return False
@@ -97,11 +93,11 @@ class KeyCode:
     
     def _generate_key(self, bytes_k1: int = 40, bytes_k2: int = 40) -> None:
         
-        if self._first_time:
-            self._k1 = generate_prime(bytes_k1)
-            self._k2 = coprime(self._k1 - 1, bytes_k2)
-            self._k3 = inverse_module(self._k2, self._k1 - 1)
-            self._first_time = False
-        else:
-            print('The KeyCode can generate keys only once')
+        self._k1 = generate_prime(bytes_k1)
+        self._k2 = coprime(self._k1 - 1, bytes_k2)
+        self._k3 = inverse_module(self._k2, self._k1 - 1)
 
+    def reset_key(self):
+        self._k1 = None
+        self._k2 = None
+        self._k3 = None

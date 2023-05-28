@@ -1,6 +1,29 @@
 from keycode import KeyCode
 from encryption import Encryption
 
+
+
+enc = Encryption()
+
+kc = KeyCode()
+kc()
+enc.key_code = kc
+print(kc)
+enc.message = "Texto de prueba"
+
+enc.encrypt_message()
+enc.decipher_message()
+
+
+
+
+
+
+
+
+
+
+
 def main():
     pass
 

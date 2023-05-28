@@ -135,6 +135,9 @@ class Encryption:
                 self.message = open_text_out(c_num, ran, dict_out)
             except:
                 input('\n\tSomething is wrong!\n')
+
+    def reset_message(self):
+        self.message = "~"
             
             
 def run():
