@@ -138,6 +138,7 @@ class Encryption:
 
     def reset_message(self):
         self.message = "~"
+        self.key_code = None
             
             
 def run():
